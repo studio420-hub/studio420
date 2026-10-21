@@ -136,6 +136,15 @@ export default function ServicesSection() {
                     <p className="service-row-desc">
                       {service.description}
                     </p>
+
+                    <div className="service-mobile-img-w">
+                      <img
+                        src={service.image}
+                        alt={`${service.name} — Studio 420 Discipline`}
+                        className="service-mobile-img"
+                        loading="lazy"
+                      />
+                    </div>
                   </div>
                 </div>
               );

@@ -70,15 +70,25 @@ export default function GlitchSection() {
               {scrambleText}
               <br />
 
-              <span
-                style={{
-                  fontSize: '0.85em',
-                  opacity: 0.8,
-                  color: '#ffffff',
-                }}
+              <div
+                className="glitch-disciplines-tags"
+                aria-label="Disciplines: Branding, Social, AI Web, Logo, Decks, Packaging"
               >
-                [ BRANDING / SOCIAL / AI WEB / LOGO / DECKS / PACKAGING ]
-              </span>
+                <span className="glitch-bracket">[</span>{' '}
+                <span className="glitch-tag-item">BRANDING</span>{' '}
+                <span className="glitch-separator">/</span>{' '}
+                <span className="glitch-tag-item">SOCIAL</span>{' '}
+                <span className="glitch-separator">/</span>{' '}
+                <span className="glitch-tag-item">AI WEB</span>{' '}
+                <span className="glitch-separator">/</span>{' '}
+                <span className="glitch-tag-item">LOGO</span>{' '}
+                <span className="glitch-separator">/</span>{' '}
+                <span className="glitch-tag-item">DECKS</span>{' '}
+                <span className="glitch-separator">/</span>{' '}
+                <span className="glitch-tag-item glitch-last-item">
+                  PACKAGING <span className="glitch-bracket">]</span>
+                </span>
+              </div>
             </div>
 
             <h3 className="finaltext">

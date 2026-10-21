@@ -171,6 +171,7 @@ video {
   overflow: hidden;
   align-items: center;
   user-select: none;
+  contain: paint;
 }
 
 .marquee-track {
@@ -179,6 +180,8 @@ video {
   white-space: nowrap;
   animation: marqueeLoop 24s linear infinite;
   will-change: transform;
+  flex-shrink: 0;
+  width: max-content;
 }
 
 .brand-bar:hover .marquee-track {
@@ -202,6 +205,7 @@ video {
   padding-right: clamp(1.75rem, 1.25rem + 1.5vw, 3rem);
   font-size: 13px;
   line-height: 1.15;
+  flex-shrink: 0;
 }
 
 .marquee-logo {
@@ -214,6 +218,7 @@ video {
   letter-spacing: -0.04em;
   color: #ffffff;
   text-transform: uppercase;
+  white-space: nowrap;
 }
 
 .marquee-logo .reg {
@@ -227,6 +232,11 @@ video {
   flex-direction: column;
   font-size: 12px;
   line-height: 1.2;
+  white-space: nowrap;
+}
+
+.marquee-tag span {
+  white-space: nowrap;
 }
 
 .marquee-tag .bold {
@@ -247,6 +257,11 @@ video {
   line-height: 1.2;
   font-family: var(--font-mono);
   opacity: 0.85;
+  white-space: nowrap;
+}
+
+.marquee-coords span {
+  white-space: nowrap;
 }
 
 /* Brand Bar Actions Overlay */
@@ -824,7 +839,9 @@ video {
 
 .title-work {
   min-width: 0;
-  overflow-wrap: anywhere;
+  overflow-wrap: break-word;
+  word-break: normal;
+  hyphens: manual;
   font-family: var(--font-display);
   font-size: clamp(2rem, 4.5vw, 5.5rem);
   font-weight: 700;
@@ -1144,6 +1161,38 @@ video {
   font-weight: 600;
   text-shadow: 0 0 10px rgba(208, 2, 27, 0.4);
   word-break: break-all;
+}
+
+.glitch-disciplines-tags {
+  display: inline-flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 0.25em 0.55em;
+  font-size: clamp(0.72rem, 1.4vw, 0.95rem);
+  opacity: 0.85;
+  color: #ffffff;
+  word-break: normal;
+  overflow-wrap: normal;
+  letter-spacing: 0.04em;
+  line-height: 1.6;
+  margin-top: 0.65rem;
+  max-width: 100%;
+}
+
+.glitch-tag-item {
+  white-space: nowrap;
+  word-break: keep-all;
+}
+
+.glitch-bracket {
+  color: var(--color-crimson);
+  font-weight: 700;
+}
+
+.glitch-separator {
+  opacity: 0.45;
+  user-select: none;
 }
 
 .finaltext {
@@ -2234,6 +2283,10 @@ video {
   max-width: 600px;
 }
 
+.service-mobile-img-w {
+  display: none;
+}
+
 .service-deliverables-list {
   display: flex;
   flex-wrap: wrap;
@@ -2329,11 +2382,73 @@ video {
   .service-row-content {
     display: block !important;
   }
+
+  /* Six Creative Disciplines: Images visible on mobile/tablet */
+  .service-mobile-img-w {
+    display: block;
+    width: 100%;
+    aspect-ratio: 16 / 10;
+    border-radius: 6px;
+    overflow: hidden;
+    margin-top: 1rem;
+    border: 1px solid var(--color-border);
+    background: #000000;
+  }
+
+  .service-mobile-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+}
+
+@media (max-width: 900px) {
+  /* Works section: switch to full-width stacked header on mobile/tablet */
+  .work-header-row {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+    width: 100%;
+  }
+
+  .work-header-row > div:first-child {
+    width: 100%;
+  }
+
+  .title-work {
+    font-size: clamp(1.85rem, 6.5vw, 3.2rem);
+    line-height: 1.08;
+    width: 100%;
+    max-width: 100%;
+    overflow-wrap: break-word;
+    word-break: normal;
+  }
+
+  .work-header-right {
+    width: 100%;
+    text-align: left;
+    align-items: flex-start;
+    gap: 6px;
+  }
+
+  .short-p-work {
+    text-align: left;
+  }
 }
 
 @media (max-width: 768px) {
   :root {
     --bar-h: 3.5rem;
+  }
+
+  /* Prevent page-wide horizontal overflow */
+  html,
+  body {
+    overflow-x: hidden;
+    width: 100%;
+    max-width: 100vw;
   }
 
   .hide-mob {
@@ -2344,13 +2459,59 @@ video {
     display: block !important;
   }
 
+  /* Red scrolling ticker mobile sizing */
+  .marquee-unit {
+    gap: 1.25rem;
+    padding-right: 1.25rem;
+    font-size: 11px;
+  }
+
+  .marquee-logo {
+    font-size: 0.95rem;
+    gap: 6px;
+  }
+
+  .marquee-tag {
+    font-size: 10px;
+    line-height: 1.2;
+  }
+
+  .marquee-coords {
+    font-size: 9.5px;
+    line-height: 1.2;
+  }
+
   .menu-quick-links {
     display: none;
   }
 
   .menu-w {
-    top: calc(var(--bar-h) + 0.75rem);
+    top: calc(var(--bar-h) + 0.65rem);
     right: var(--page-pad);
+  }
+
+  .menu-btn {
+    padding: 6px 13px;
+    font-size: 10px;
+    gap: 6px;
+  }
+
+  .section-hero-home {
+    padding-top: clamp(2.5rem, 5.5vw, 3.75rem);
+    padding-bottom: 2rem;
+  }
+
+  .hero-wordmark-container {
+    padding: 0;
+    width: 100%;
+    max-width: 100%;
+    overflow: hidden;
+  }
+
+  .hero-wordmark-svg {
+    width: 100% !important;
+    max-width: 100% !important;
+    height: auto !important;
   }
 
   .works-word {
@@ -2380,19 +2541,6 @@ video {
     letter-spacing: -0.03em;
   }
 
-  .hero-wordmark-container {
-    padding: 0;
-    width: 100%;
-    max-width: 100%;
-    overflow: hidden;
-  }
-
-  .hero-wordmark-svg {
-    width: 100% !important;
-    max-width: 100% !important;
-    height: auto !important;
-  }
-
   .link-hero-bottom-w {
     flex-direction: column;
     align-items: flex-start;
@@ -2400,19 +2548,61 @@ video {
   }
 
   .link-hero-lang-w {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+    gap: 8px 12px;
     width: 100%;
-    justify-content: space-between;
   }
 
-  .work-header-row {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 8px;
+  /* Services section: prevent overlapping on narrow screens */
+  .services-main-title {
+    font-size: clamp(1.75rem, 6.5vw, 2.5rem);
   }
 
-  .work-header-right {
-    text-align: left;
+  .service-item-row {
+    padding: 1.25rem 0;
+  }
+
+  .service-row-header {
     align-items: flex-start;
+    gap: 10px;
+  }
+
+  .service-row-num {
+    width: auto;
+    min-width: 24px;
+    font-size: 12px;
+    margin-top: 3px;
+    flex-shrink: 0;
+  }
+
+  .service-row-name {
+    font-size: clamp(1.15rem, 4.8vw, 1.55rem);
+    line-height: 1.25;
+    word-break: normal;
+    overflow-wrap: break-word;
+    flex: 1;
+    min-width: 0;
+  }
+
+  .service-row-arrow {
+    margin-top: 3px;
+    flex-shrink: 0;
+  }
+
+  .service-row-content {
+    padding-left: 0;
+    margin-top: 0.85rem;
+  }
+
+  .service-row-desc {
+    font-size: 0.92rem;
+    line-height: 1.55;
+    margin-bottom: 0.75rem;
+    word-break: normal;
+    overflow-wrap: break-word;
   }
 
   .footer-actions-row {
@@ -2425,7 +2615,6 @@ video {
     align-items: flex-start;
     gap: 6px;
   }
-
 
   a.designer-link {
     display: inline-block !important;
@@ -2449,7 +2638,6 @@ video {
     transform: scale(1.1);
     box-shadow: 0 0 18px rgba(255, 0, 60, 0.45);
   }
-
 }
 
 /* ========================================================

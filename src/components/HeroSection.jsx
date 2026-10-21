@@ -23,7 +23,7 @@ export default function HeroSection() {
 
           <div className="link-hero-lang-w">
             <a
-              href="https://linkedin.com"
+              href="https://www.linkedin.com/company/studio420in"
               target="_blank"
               rel="noreferrer"
               className="social-link"
@@ -41,15 +41,13 @@ export default function HeroSection() {
             </a>
             <span style={{ color: 'var(--color-border-subtle)' }}>/</span>
             <a
-              href="https://behance.net"
+              href="https://www.behance.net/arunpreman6456"
               target="_blank"
               rel="noreferrer"
-              className="social-link hide-mob"
+              className="social-link"
             >
               BEHANCE
             </a>
-            <span style={{ color: 'var(--color-border-subtle)' }} className="hide-mob">/</span>
-            <span style={{ color: '#ffffff', fontWeight: 600 }}>EN</span>
           </div>
         </div>
       </div>

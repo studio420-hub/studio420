@@ -13,7 +13,7 @@ export default function WordmarkSvg({
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 1660 280"
+      viewBox="0 0 1710 280"
       className={className}
       fill="none"
       role="img"
