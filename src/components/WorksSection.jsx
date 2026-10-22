@@ -56,11 +56,6 @@ export const PROJECTS_DATA = [
   },
 ];
 
-/**
- * WORKS SECTION
- * Selected projects across branding, digital design, and package design.
- * Preserves the existing project selection interaction.
- */
 export default function WorksSection({ onSelectProject }) {
   return (
     <section
@@ -69,14 +64,12 @@ export default function WorksSection({ onSelectProject }) {
       aria-label="Studio 420 Selected Works"
     >
       <div className="container">
-        {/* Works Heading */}
         <div className="works-word-w" aria-label="Works">
           <span className="works-word">WORKS</span>
         </div>
 
         <div className="space-87" />
 
-        {/* Section Introduction */}
         <div className="titile-section-work">
           <h2 className="h3-style">
             Good design communicates.
@@ -85,54 +78,38 @@ export default function WorksSection({ onSelectProject }) {
           </h2>
 
           <p className="works-section-meta">
-            Explore our work across branding,
-            AI-powered digital experiences, and package design.
+            Explore our work across branding, AI-powered digital
+            experiences, and package design.
           </p>
 
           <a
+            className="works-designer-link"
             href="https://www.behance.net/arunpreman6456"
             target="_blank"
             rel="noopener noreferrer"
-            style={{
-              display: 'inline-block',
-              marginTop: '20px',
-              fontSize: '24px',
-              fontWeight: 900,
-              color: '#ffffff',
-              textDecoration: 'none',
-              fontFamily: 'inherit',
-              cursor: 'pointer',
-              transition: 'transform 0.3s ease, color 0.3s ease',
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.transform = 'scale(1.1)';
-              e.currentTarget.style.color = '#ff003c';
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.transform = 'scale(1)';
-              e.currentTarget.style.color = '#ffffff';
-            }}
           >
             Meet Our Designer ↗
           </a>
         </div>
 
-        {/* Featured Projects */}
-        <div className="work_list">
-          {PROJECTS_DATA.map((project) => (
-            <article key={project.id} className="work_item">
-              <div className="work-header-row">
-                <div>
-                  <div className="concept-pill">
+        <div className="works-gallery">
+          {PROJECTS_DATA.map((project, index) => (
+            <article
+              key={project.id}
+              className={`works-project works-project--${index + 1}`}
+            >
+              <div className="works-project-header">
+                <div className="works-project-heading">
+                  <span className="concept-pill">
                     {project.badge}
-                  </div>
+                  </span>
 
-                  <h3 className="title-work">
+                  <h3 className="works-project-title">
                     {project.title}
                   </h3>
                 </div>
 
-                <div className="work-header-right">
+                <div className="works-project-info">
                   <span className="work-category-tag">
                     {project.category}
                   </span>
@@ -143,31 +120,18 @@ export default function WorksSection({ onSelectProject }) {
                 </div>
               </div>
 
-              <div
-                className="work-link"
+              <button
+                type="button"
+                className="works-project-image"
                 onClick={() => onSelectProject?.(project)}
-                role="button"
-                tabIndex={0}
-                onKeyDown={(e) => {
-                  if (
-                    (e.key === 'Enter' || e.key === ' ') &&
-                    onSelectProject
-                  ) {
-                    e.preventDefault();
-                    onSelectProject(project);
-                  }
-                }}
                 aria-label={`View project details: ${project.title}`}
               >
-                <div className="img-work-w">
-                  <img
-                    src={project.image}
-                    alt={`${project.title} — ${project.category}`}
-                    className="img-work"
-                    loading="lazy"
-                  />
-                </div>
-              </div>
+                <img
+                  src={project.image}
+                  alt={`${project.title} — ${project.category}`}
+                  loading="lazy"
+                />
+              </button>
             </article>
           ))}
         </div>
