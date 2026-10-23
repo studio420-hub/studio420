@@ -3449,3 +3449,19 @@ video {
     transition-duration: 0.01ms !important;
   }
 }
+
+
+/* STUDIO 420 — MOBILE HERO LOGO BACKGROUND FIX */
+@media (max-width: 768px) {
+  .section-hero-home .hero-wordmark-container {
+    background: #000 !important;
+    isolation: isolate;
+  }
+
+  .section-hero-home .hero-wordmark-svg {
+    background: transparent !important;
+    mix-blend-mode: normal !important;
+    filter: none !important;
+    opacity: 1 !important;
+  }
+}
