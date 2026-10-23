@@ -1,6 +1,5 @@
 
 import React, { useState } from 'react';
-import WordmarkSvg from './WordmarkSvg';
 
 const STUDIO_EMAIL = 'lets420@studio420.in';
 
@@ -101,8 +100,6 @@ export default function FooterSection({ onBookDiscoveryCall }) {
               </span>
             </a>
 
-
-
             {showEmailFallback && (
               <div
                 className="email-fallback"
@@ -145,8 +142,6 @@ export default function FooterSection({ onBookDiscoveryCall }) {
                 </button>
               </div>
             )}
-
-
           </div>
 
           <div className="footer-socials">
@@ -177,15 +172,6 @@ export default function FooterSection({ onBookDiscoveryCall }) {
               Behance
             </a>
           </div>
-        </div>
-
-        {/* Full Width Footer Vector Wordmark */}
-        <div className="footer-svg-w">
-          <WordmarkSvg
-            className="footer-wordmark-svg"
-            color="#ffffff"
-            numberColor="#ffffff"
-          />
         </div>
 
         {/* Colophon Metadata Row */}

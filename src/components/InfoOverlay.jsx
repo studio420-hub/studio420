@@ -114,8 +114,8 @@ export default function InfoOverlay({ isOpen, onClose }) {
           <div className="info-meta-row">
             <div>
               <div className="info-label">( Inquiries & Collaborations )</div>
-              <a href="mailto:contact@studio420.design" className="info-contact-link">
-                contact@studio420.design
+              <a href="mailto:lets420@studio420.in" className="info-contact-link">
+                lets420@studio420.in
               </a>
               <div className="info-hours">Response time: Within 24 hours</div>
             </div>

@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 const SERVICES_DATA = [
   {
@@ -58,18 +58,50 @@ const SERVICES_DATA = [
   },
 ];
 
-/**
- * SERVICES SECTION
- * Six creative services with interactive inspection
- * and dynamic image previews.
- */
 export default function ServicesSection() {
-  const [activeService, setActiveService] = useState(0);
+  const [activeService, setActiveService] = useState(null);
+  const sectionRef = useRef(null);
 
-  const active = SERVICES_DATA[activeService];
+  const active =
+    activeService === null ? null : SERVICES_DATA[activeService];
+
+  useEffect(() => {
+    const section = sectionRef.current;
+    if (!section) return;
+
+    section.classList.add('motion-ready');
+
+    if (
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    ) {
+      section.classList.add('is-in-view');
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          section.classList.add('is-in-view');
+          observer.unobserve(section);
+        }
+      },
+      { threshold: 0.12 }
+    );
+
+    observer.observe(section);
+
+    return () => observer.disconnect();
+  }, []);
+
+  const handleServiceClick = (index) => {
+    setActiveService((current) =>
+      current === index ? null : index
+    );
+  };
 
   return (
     <section
+      ref={sectionRef}
       id="services"
       className="section section-services"
       aria-label="Studio 420 Creative Services"
@@ -77,7 +109,6 @@ export default function ServicesSection() {
       <div className="container">
         <div className="space-87" />
 
-        {/* Section Header */}
         <div className="services-header-row">
           <div className="tag-label">( What We Create )</div>
 
@@ -90,15 +121,13 @@ export default function ServicesSection() {
           </h2>
 
           <p className="services-header-sub">
-            We provide full-spectrum brand and digital craft. From strategic
-            visual identity and physical packaging to AI-assisted website
-            development and investor storytelling.
+            We provide full-spectrum brand and digital craft. From
+            strategic visual identity and physical packaging to
+            AI-assisted website development and investor storytelling.
           </p>
         </div>
 
-        {/* Interactive Services Layout */}
         <div className="services-interactive-layout">
-          {/* Service List */}
           <div className="services-list-col">
             {SERVICES_DATA.map((service, index) => {
               const isActive = activeService === index;
@@ -108,17 +137,28 @@ export default function ServicesSection() {
                   key={service.id}
                   className={`service-item-row ${isActive ? 'is-active' : ''
                     }`}
-                  onClick={() => setActiveService(index)}
-                  onMouseEnter={() => setActiveService(index)}
-                  role="button"
-                  tabIndex={0}
-                  onKeyDown={(e) => {
-                    if (e.key === 'Enter' || e.key === ' ') {
-                      e.preventDefault();
+                  onClick={() => handleServiceClick(index)}
+                  onMouseEnter={() => {
+                    if (
+                      window.matchMedia(
+                        '(hover: hover) and (min-width: 701px)'
+                      ).matches
+                    ) {
                       setActiveService(index);
                     }
                   }}
+                  role="button"
+                  tabIndex={0}
                   aria-expanded={isActive}
+                  onKeyDown={(event) => {
+                    if (
+                      event.key === 'Enter' ||
+                      event.key === ' '
+                    ) {
+                      event.preventDefault();
+                      handleServiceClick(index);
+                    }
+                  }}
                 >
                   <div className="service-row-header">
                     <span className="service-row-num">
@@ -129,10 +169,18 @@ export default function ServicesSection() {
                       {service.name}
                     </h3>
 
-                    <span className="service-row-arrow">→</span>
+                    <span
+                      className="service-row-arrow"
+                      aria-hidden="true"
+                    >
+                      {isActive ? '−' : '→'}
+                    </span>
                   </div>
 
-                  <div className="service-row-content">
+                  <div
+                    className={`service-row-content ${isActive ? 'is-expanded' : ''
+                      }`}
+                  >
                     <p className="service-row-desc">
                       {service.description}
                     </p>
@@ -140,7 +188,7 @@ export default function ServicesSection() {
                     <div className="service-mobile-img-w">
                       <img
                         src={service.image}
-                        alt={`${service.name} — Studio 420 Discipline`}
+                        alt={`${service.name} — Studio 420`}
                         className="service-mobile-img"
                         loading="lazy"
                       />
@@ -151,34 +199,35 @@ export default function ServicesSection() {
             })}
           </div>
 
-          {/* Dynamic Service Preview */}
           <div className="services-preview-col">
-            <div className="service-preview-card">
-              <div className="service-preview-img-w">
-                <img
-                  src={active.image}
-                  alt={active.name}
-                  className="service-preview-img"
-                  loading="lazy"
-                />
-              </div>
-
-              <div className="service-preview-meta">
-                <div className="service-preview-top">
-                  <span className="service-preview-badge">
-                    {active.num} // DISCIPLINE
-                  </span>
-
-                  <span className="service-preview-active-name">
-                    {active.name}
-                  </span>
+            {active && (
+              <div className="service-preview-card">
+                <div className="service-preview-img-w">
+                  <img
+                    src={active.image}
+                    alt={active.name}
+                    className="service-preview-img"
+                    loading="lazy"
+                  />
                 </div>
 
-                <p className="service-preview-tagline">
-                  {active.tagline}
-                </p>
+                <div className="service-preview-meta">
+                  <div className="service-preview-top">
+                    <span className="service-preview-badge">
+                      {active.num} // DISCIPLINE
+                    </span>
+
+                    <span className="service-preview-active-name">
+                      {active.name}
+                    </span>
+                  </div>
+
+                  <p className="service-preview-tagline">
+                    {active.tagline}
+                  </p>
+                </div>
               </div>
-            </div>
+            )}
           </div>
         </div>
       </div>

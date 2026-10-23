@@ -1,12 +1,11 @@
 
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 export const PROJECTS_DATA = [
   {
     id: 'wander',
     title: 'WANDER — TRAVEL BRAND IDENTITY',
-    subtitle:
-      'A distinctive travel identity built for exploration and discovery.',
+    subtitle: 'A distinctive travel identity built for exploration and discovery.',
     category: 'Branding & Visual Identity',
     badge: 'SELECTED WORK // 2026',
     year: '2026',
@@ -22,8 +21,7 @@ export const PROJECTS_DATA = [
   {
     id: 'forma',
     title: 'FORMA — E-COMMERCE EXPERIENCE',
-    subtitle:
-      'An AI-assisted digital storefront designed around modern shopping.',
+    subtitle: 'An AI-assisted digital storefront designed around modern shopping.',
     category: 'AI Website Development & Digital Design',
     badge: 'SELECTED WORK // 2026',
     year: '2026',
@@ -40,8 +38,7 @@ export const PROJECTS_DATA = [
   {
     id: 'eatwell',
     title: 'EATWELL — PACKAGE DESIGN',
-    subtitle:
-      'A cohesive food packaging identity designed to stand out.',
+    subtitle: 'A cohesive food packaging identity designed to stand out.',
     category: 'Packaging Design & Visual Identity',
     badge: 'SELECTED WORK // 2026',
     year: '2026',
@@ -57,8 +54,58 @@ export const PROJECTS_DATA = [
 ];
 
 export default function WorksSection({ onSelectProject }) {
+  const [activeProject, setActiveProject] = useState(null);
+  const sectionRef = useRef(null);
+
+  const isMobile = () =>
+    typeof window !== 'undefined' &&
+    window.matchMedia('(max-width: 700px)').matches;
+
+  useEffect(() => {
+    const section = sectionRef.current;
+    if (!section) return;
+
+    section.classList.add('motion-ready');
+
+    if (
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    ) {
+      section.classList.add('is-in-view');
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          section.classList.add('is-in-view');
+          observer.unobserve(section);
+        }
+      },
+      { threshold: 0.12 }
+    );
+
+    observer.observe(section);
+
+    return () => observer.disconnect();
+  }, []);
+
+  const handleProjectClick = (project) => {
+    if (isMobile()) {
+      if (activeProject !== project.id) {
+        setActiveProject(project.id);
+        return;
+      }
+
+      onSelectProject?.(project);
+      return;
+    }
+
+    onSelectProject?.(project);
+  };
+
   return (
     <section
+      ref={sectionRef}
       id="works"
       className="section section-works"
       aria-label="Studio 420 Selected Works"
@@ -92,48 +139,80 @@ export default function WorksSection({ onSelectProject }) {
           </a>
         </div>
 
-        <div className="works-gallery">
-          {PROJECTS_DATA.map((project, index) => (
-            <article
-              key={project.id}
-              className={`works-project works-project--${index + 1}`}
-            >
-              <div className="works-project-header">
-                <div className="works-project-heading">
-                  <span className="concept-pill">
-                    {project.badge}
-                  </span>
+        <div className="works-gallery works-gallery--hover">
+          <div className="works-project-list">
+            {PROJECTS_DATA.map((project, index) => {
+              const isActive = activeProject === project.id;
 
-                  <h3 className="works-project-title">
-                    {project.title}
-                  </h3>
-                </div>
+              return (
+                <article
+                  key={project.id}
+                  className={`works-project works-project--${index + 1} ${isActive ? 'is-hovered is-active' : ''
+                    }`}
+                  onMouseEnter={() => {
+                    if (!isMobile()) {
+                      setActiveProject(project.id);
+                    }
+                  }}
+                  onMouseLeave={() => {
+                    if (!isMobile()) {
+                      setActiveProject(null);
+                    }
+                  }}
+                >
+                  <button
+                    type="button"
+                    className="works-project-row"
+                    onClick={() => handleProjectClick(project)}
+                    aria-label={`Preview project: ${project.title}. Tap again for details.`}
+                    aria-expanded={isActive}
+                  >
+                    <span className="works-project-number">
+                      {String(index + 1).padStart(2, '0')}
+                    </span>
 
-                <div className="works-project-info">
-                  <span className="work-category-tag">
-                    {project.category}
-                  </span>
+                    <span className="works-project-heading">
+                      <span className="concept-pill">
+                        {project.badge}
+                      </span>
 
-                  <p className="short-p-work">
-                    {project.subtitle}
-                  </p>
-                </div>
-              </div>
+                      <span className="works-project-title">
+                        {project.title}
+                      </span>
 
-              <button
-                type="button"
-                className="works-project-image"
-                onClick={() => onSelectProject?.(project)}
-                aria-label={`View project details: ${project.title}`}
-              >
-                <img
-                  src={project.image}
-                  alt={`${project.title} — ${project.category}`}
-                  loading="lazy"
-                />
-              </button>
-            </article>
-          ))}
+                      <span className="work-category-tag">
+                        {project.category}
+                      </span>
+                    </span>
+
+                    <span
+                      className="works-project-arrow"
+                      aria-hidden="true"
+                    >
+                      ↗
+                    </span>
+                  </button>
+
+                  <div
+                    className={`works-hover-preview ${isActive ? 'is-visible' : ''
+                      }`}
+                    aria-hidden={!isActive}
+                  >
+                    <img
+                      src={project.image}
+                      alt={`${project.title} project preview`}
+                      loading="lazy"
+                    />
+
+                    <div className="works-hover-caption">
+                      <span>{project.category}</span>
+                      <span>{project.year}</span>
+                    </div>
+                  </div>
+                </article>
+              );
+            })}
+          </div>
         </div>
       </div>
     </section>
